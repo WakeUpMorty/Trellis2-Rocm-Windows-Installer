@@ -39,7 +39,7 @@ ComfyUI_windows_portable\
 
 ```
 
-## install-trellis2-global-new.bat
+## install-trellis2-global.bat
 
 **Place the `.bat` next to a `wheels\` folder** (anywhere, since it uses the global `python` from PATH). The node is cloned into `.\ComfyUI\custom_nodes\ComfyUI-Trellis2` (or `.\custom_nodes\` if that exists) relative to wherever you run the bat — so run it from the ComfyUI install root if you want the node in the right place. `git` must be on PATH, and wheels are always force-reinstalled.
 
