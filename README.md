@@ -45,7 +45,7 @@ ComfyUI_windows_portable\
 
 ```
 some-folder\
-├── install-trellis2-global-new.bat   ← here
+├── install-trellis2-global.bat   ← here
 └── wheels\                          ← WT=.\wheels
     ├── cumesh-...whl
     ├── flex_gemm-...whl
