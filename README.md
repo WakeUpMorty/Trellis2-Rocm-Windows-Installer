@@ -1,6 +1,16 @@
 # Trellis2-Rocm-Windows-Installer for https://github.com/visualbruno/ComfyUI-Trellis2
 One-click installers for Microsoft TRELLIS 2 on AMD GPUs under Windows — native ROCm build. Includes a portable ComfyUI installer, a global-python installer, all with auto node-clone, force-reinstall wheel installs, and the uv_raster AMD-native rasterizer patches for render/extract.
 
+# You need to have access to facebook dinov3 models in order to use Trellis.2
+
+https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m
+
+Clone the repository in ComfyUI models folder under "facebook/dinov3-vitl16-pretrain-lvd1689m"
+
+So in ComfyUI/models/facebook/dinov3-vitl16-pretrain-lvd1689m
+
+As of now Pixal3D-T model, it's working natten package still needs porting 
+
 # Tested on RDNA 4. Compiled with RDNA3, RDNA3.5 and RDNA4 for Rocm 7.2.1+Pytorch 2.9.1 and Rocm 7.14+Pytorch 2.12
 
 Backend needs to be change from Flash Attention--->SDPA as per photo to work
