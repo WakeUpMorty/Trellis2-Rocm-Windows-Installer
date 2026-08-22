@@ -3,6 +3,8 @@ One-click installers for Microsoft TRELLIS 2 on AMD GPUs under Windows — nativ
 
 # Tested on RDNA 4. Compiled with RDNA3, RDNA3.5 and RDNA4 for Rocm 7.2.1+Pytorch 2.9.1 and Rocm 7.14+Pytorch 2.12
 
+Backend needs to be change from Flash Attention--->SDPA as per photo to work
+
 ---
 
 <img width="1920" height="980" alt="Image" src="https://github.com/user-attachments/assets/82851a70-aae3-4473-a1c4-f06f1735b45e" />
@@ -42,7 +44,7 @@ some-folder\
     └── uv_raster-...whl
 ```
 
-ää My startup flags 
+## My startup flags 
 
 ```
 set PYTORCH_ALLOC_CONF=expandable_segments:True
