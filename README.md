@@ -41,3 +41,11 @@ some-folder\
     ├── o_voxel-...whl
     └── uv_raster-...whl
 ```
+
+ää My startup flags 
+
+```
+set PYTORCH_ALLOC_CONF=expandable_segments:True
+set HIP_VISIBLE_DEVICES=0
+.\python_embeded\python.exe -s ComfyUI\main.py --windows-standalone-build --use-pytorch-cross-attention
+```
