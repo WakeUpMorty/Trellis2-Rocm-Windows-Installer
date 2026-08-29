@@ -25,7 +25,7 @@ rem ============================================================
 
 cd /d "%~dp0"
 
-set "WT=.\wheels"
+set "WT=.\Trellis 2 Wheels"
 
 rem ---- git availability ----
 where git >nul 2>nul
@@ -42,14 +42,25 @@ echo.
 echo Using python: %PY%
 %PY% --version
 
-rem ---- verify torch is a ROCm build >= 2.9.1+rocm7.2.1 ----
+rem ---- verify torch is a ROCm build >= 2.9 + ROCm 7.2, x.y check ----
 echo.
 echo === Verifying torch / ROCm version ===
-"%PY%" -c "import torch,re,sys; v=torch.__version__; m=re.search(r'rocm([0-9]+\.[0-9]+\.[0-9]+)',v); tv=tuple(int(x) for x in v.split('+')[0].split('.')[:2]); rv=tuple(int(x) for x in m.group(1).split('.'))[:2] if m else (0,0); sys.exit(0) if (m and tv>=(2,9) and rv>=(7,2)) else (print('ERROR: this installer requires torch >= 2.9 built on ROCm >= 7.2.') or print('       found: '+v) or sys.exit(1))"
-if errorlevel 1 (
+set "ROCMCHK=%TEMP%\trellis_rocm_check_%RANDOM%.py"
+echo import torch, re, sys>"%ROCMCHK%"
+echo v = torch.__version__>>"%ROCMCHK%"
+echo m = re.search(r'rocm([0-9]+\.[0-9]+\.[0-9]+)', v)>>"%ROCMCHK%"
+echo ok = (m is not None) and tuple(int(x) for x in v.split('+')[0].split('.')[:2]) ^>= (2, 9) and tuple(int(x) for x in m.group(1).split('.')[:2]) ^>= (7, 2)>>"%ROCMCHK%"
+echo if not ok:>>"%ROCMCHK%"
+echo     print('ERROR: this installer requires torch >= 2.9 built on ROCm >= 7.2, found: ' + v)>>"%ROCMCHK%"
+echo     sys.exit(1)>>"%ROCMCHK%"
+echo sys.exit(0)>>"%ROCMCHK%"
+"%PY%" "%ROCMCHK%"
+set "ROCMERR=%errorlevel%"
+if exist "%ROCMCHK%" del /f /q "%ROCMCHK%" >nul 2>nul
+if %ROCMERR% neq 0 (
     echo.
     echo ERROR: torch/ROCm version check failed. Install/use a ROCm build of
-    echo torch 2.9 or newer (e.g. torch 2.9+rocm7.2) before running this installer.
+    echo torch 2.9 or newer, e.g. torch 2.9+rocm7.2, before running this installer.
     pause & exit /b 1
 )
 echo  torch/ROCm version OK.
@@ -106,17 +117,18 @@ call :install_wheel uv_raster "%WT%\uv_raster-0.1.0-cp312-cp312-win_amd64.whl"
 
 echo.
 echo === Verifying install ===
-"%PY%" -c "import cumesh, flex_gemm, nvdiffrast, o_voxel; import uv_raster; print('Trellis2 wheels OK')"
+"%PY%" -c "import cumesh, flex_gemm, nvdiffrast, o_voxel, uv_raster"
 if errorlevel 1 ( echo WARNING: Trellis2 wheels did not import correctly. ) else (
     echo.
     echo ============================================
-    echo  Trellis2 (portable) install complete!
-    echo  Restart ComfyUI (run ComfyUI\run_nvidia_gpu.bat or equivalent) and you are good to go.
+    echo  Trellis2 portable install complete!
+    echo  Restart ComfyUI - run ComfyUI\run_nvidia_gpu.bat or equivalent - and you are good to go.
     echo ============================================
 )
 
 echo.
 pause
+goto :eof
 
 rem ---- helper: always force-reinstall the wheel (no skip) ----
 :install_wheel

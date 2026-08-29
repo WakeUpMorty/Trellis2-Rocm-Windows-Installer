@@ -1,25 +1,24 @@
 @echo off
 setlocal EnableDelayedExpansion
 chcp 65001 >nul
-title Install Trellis2 (Global Python / native ROCm)
+title Install Trellis2 (Global Python / ROCm 10)
 
 rem ============================================================
 rem  Trellis2 one-click installer - GLOBAL python build
-rem  Target: a system/global Python on PATH (native-ROCm torch)
+rem  Target: a system/global Python on PATH, native-ROCm torch
+rem  LOCKED to torch 2.13 + ROCm 10.0 - the build shipped in
+rem  this folder. Other torch/ROCm versions will be refused.
 rem
 rem  Place this .bat next to the wheels\ folder.
 rem  Edit the PY var below if python is not on your PATH.
 rem
-rem  - Missing node is auto-cloned (+ requirements.txt installed).
-rem  - Wheels are always force-reinstalled (clean re-run).
-rem  Global specifics:
-rem   - Python = global "python"
-rem   - Requires torch >= 2.9.1 built on ROCm >= 7.2.1
-rem   - triton-windows IS installed (kept for parity/compat)
-rem   - uv_raster wheel provides the AMD-native rasterizer used by
-rem     the patched render/extract paths.
+rem  - Missing node is auto-cloned with requirements.txt installed.
+rem  - Wheels are always force-reinstalled for a clean re-run.
+rem  - triton-windows IS installed, kept for parity and compat.
+rem  - uv_raster wheel provides the AMD-native rasterizer used by
+rem    the patched render/extract paths.
 rem  IMPORTANT: the wheels must be built for your global
-rem  native-ROCm torch.
+rem  native-ROCm torch 2.13 + ROCm 10.0.
 rem ============================================================
 
 cd /d "%~dp0"
@@ -44,16 +43,16 @@ echo.
 echo Using python: %PY%
 %PY% --version
 
-rem ---- verify torch is a ROCm build >= 2.9 + ROCm 7.2, x.y check ----
+rem ---- verify torch is EXACTLY 2.13 + ROCm 10.0, x.y check ----
 echo.
 echo === Verifying torch / ROCm version ===
 set "ROCMCHK=%TEMP%\trellis_rocm_check_%RANDOM%.py"
 echo import torch, re, sys>"%ROCMCHK%"
 echo v = torch.__version__>>"%ROCMCHK%"
 echo m = re.search(r'rocm([0-9]+\.[0-9]+\.[0-9]+)', v)>>"%ROCMCHK%"
-echo ok = (m is not None) and tuple(int(x) for x in v.split('+')[0].split('.')[:2]) ^>= (2, 9) and tuple(int(x) for x in m.group(1).split('.')[:2]) ^>= (7, 2)>>"%ROCMCHK%"
+echo ok = (m is not None) and tuple(int(x) for x in v.split('+')[0].split('.')[:2]) == (2, 13) and tuple(int(x) for x in m.group(1).split('.')[:2]) == (10, 0)>>"%ROCMCHK%"
 echo if not ok:>>"%ROCMCHK%"
-echo     print('ERROR: this installer requires torch >= 2.9 built on ROCm >= 7.2, found: ' + v)>>"%ROCMCHK%"
+echo     print('ERROR: locked to torch 2.13 + ROCm 10.0, found: ' + v)>>"%ROCMCHK%"
 echo     sys.exit(1)>>"%ROCMCHK%"
 echo sys.exit(0)>>"%ROCMCHK%"
 "%PY%" "%ROCMCHK%"
@@ -61,13 +60,13 @@ set "ROCMERR=%errorlevel%"
 if exist "%ROCMCHK%" del /f /q "%ROCMCHK%" >nul 2>nul
 if %ROCMERR% neq 0 (
     echo.
-    echo ERROR: torch/ROCm version check failed. Install/use a ROCm build of
-    echo torch 2.9 or newer, e.g. torch 2.9+rocm7.2, before running this installer.
+    echo ERROR: torch/ROCm version mismatch. Use the torch 2.13 + ROCm 10.0
+    echo build family, the one paired with this folder. Other versions are refused.
     pause & exit /b 1
 )
-echo  torch/ROCm version OK.
+echo  torch 2.13 + ROCm 10.0 confirmed.
 
-rem ---- locate custom_nodes ----
+rem ---- locate custom_nodes (ComfyUI\custom_nodes at root) ----
 if exist ".\ComfyUI\custom_nodes" ( set "NODES=.\ComfyUI\custom_nodes" ) else ( set "NODES=.\custom_nodes" )
 if not exist "%NODES%" ( mkdir "%NODES%" >nul 2>nul )
 echo Using custom_nodes: %NODES%
@@ -123,7 +122,7 @@ echo === Verifying install ===
 if errorlevel 1 ( echo WARNING: Trellis2 wheels did not import correctly. ) else (
     echo.
     echo ============================================
-    echo  Trellis2 global install complete!
+    echo  Trellis2 global, ROCm 10.0 install complete!
     echo  Restart ComfyUI and you are good to go.
     echo ============================================
 )

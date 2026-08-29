@@ -1,25 +1,28 @@
 @echo off
 setlocal EnableDelayedExpansion
 chcp 65001 >nul
-title Install Trellis2 (Global Python / native ROCm)
+title Install Trellis2 (ComfyUI_windows_portable / ROCm 10)
 
 rem ============================================================
-rem  Trellis2 one-click installer - GLOBAL python build
-rem  Target: a system/global Python on PATH (native-ROCm torch)
+rem  Trellis2 one-click installer - ComfyUI_windows_portable build
+rem  Target: native-ROCm ComfyUI_windows_portable python_embeded
+rem  LOCKED to torch 2.13 + ROCm 10.0 - the build shipped in
+rem  this folder. Other torch/ROCm versions will be refused.
 rem
-rem  Place this .bat next to the wheels\ folder.
-rem  Edit the PY var below if python is not on your PATH.
+rem  Place this .bat in the ComfyUI_windows_portable ROOT folder -
+rem  the folder that contains python_embeded\python.exe and
+rem  ComfyUI\custom_nodes\.
+rem  Keep the wheels\ folder next to it.
 rem
-rem  - Missing node is auto-cloned (+ requirements.txt installed).
-rem  - Wheels are always force-reinstalled (clean re-run).
-rem  Global specifics:
-rem   - Python = global "python"
-rem   - Requires torch >= 2.9.1 built on ROCm >= 7.2.1
-rem   - triton-windows IS installed (kept for parity/compat)
+rem  - Missing node is auto-cloned with requirements.txt installed.
+rem  - Wheels are always force-reinstalled for a clean re-run.
+rem  Native ROCm specifics:
+rem   - Python = python_embeded\python.exe, ROCM-native torch
+rem   - triton-windows IS installed, kept for parity and compat
 rem   - uv_raster wheel provides the AMD-native rasterizer used by
 rem     the patched render/extract paths.
-rem  IMPORTANT: the wheels must be built for your global
-rem  native-ROCm torch.
+rem  IMPORTANT: the wheels must be built for the portable's
+rem  native-ROCm torch 2.13 + ROCm 10.0.
 rem ============================================================
 
 cd /d "%~dp0"
@@ -33,27 +36,24 @@ if errorlevel 1 (
     pause & exit /b 1
 )
 
-rem ---- locate python: global python on PATH ----
-set "PY=python"
-where "%PY%" >nul 2>nul
-if errorlevel 1 (
-    echo ERROR: python not found on PATH. Install Python 3.12 or edit the PY var in this file.
-    pause & exit /b 1
-)
+rem ---- locate python: embedded at ComfyUI root, then system ----
+set "PY="
+if exist ".\python_embeded\python.exe" set "PY=.\python_embeded\python.exe"
+if not defined PY set "PY=python"
 echo.
 echo Using python: %PY%
 %PY% --version
 
-rem ---- verify torch is a ROCm build >= 2.9 + ROCm 7.2, x.y check ----
+rem ---- verify torch is EXACTLY 2.13 + ROCm 10.0, x.y check ----
 echo.
 echo === Verifying torch / ROCm version ===
 set "ROCMCHK=%TEMP%\trellis_rocm_check_%RANDOM%.py"
 echo import torch, re, sys>"%ROCMCHK%"
 echo v = torch.__version__>>"%ROCMCHK%"
 echo m = re.search(r'rocm([0-9]+\.[0-9]+\.[0-9]+)', v)>>"%ROCMCHK%"
-echo ok = (m is not None) and tuple(int(x) for x in v.split('+')[0].split('.')[:2]) ^>= (2, 9) and tuple(int(x) for x in m.group(1).split('.')[:2]) ^>= (7, 2)>>"%ROCMCHK%"
+echo ok = (m is not None) and tuple(int(x) for x in v.split('+')[0].split('.')[:2]) == (2, 13) and tuple(int(x) for x in m.group(1).split('.')[:2]) == (10, 0)>>"%ROCMCHK%"
 echo if not ok:>>"%ROCMCHK%"
-echo     print('ERROR: this installer requires torch >= 2.9 built on ROCm >= 7.2, found: ' + v)>>"%ROCMCHK%"
+echo     print('ERROR: locked to torch 2.13 + ROCm 10.0, found: ' + v)>>"%ROCMCHK%"
 echo     sys.exit(1)>>"%ROCMCHK%"
 echo sys.exit(0)>>"%ROCMCHK%"
 "%PY%" "%ROCMCHK%"
@@ -61,13 +61,13 @@ set "ROCMERR=%errorlevel%"
 if exist "%ROCMCHK%" del /f /q "%ROCMCHK%" >nul 2>nul
 if %ROCMERR% neq 0 (
     echo.
-    echo ERROR: torch/ROCm version check failed. Install/use a ROCm build of
-    echo torch 2.9 or newer, e.g. torch 2.9+rocm7.2, before running this installer.
+    echo ERROR: torch/ROCm version mismatch. Use the torch 2.13 + ROCm 10.0
+    echo build family, the one paired with this folder. Other versions are refused.
     pause & exit /b 1
 )
-echo  torch/ROCm version OK.
+echo  torch 2.13 + ROCm 10.0 confirmed.
 
-rem ---- locate custom_nodes ----
+rem ---- locate custom_nodes (ComfyUI\custom_nodes at root) ----
 if exist ".\ComfyUI\custom_nodes" ( set "NODES=.\ComfyUI\custom_nodes" ) else ( set "NODES=.\custom_nodes" )
 if not exist "%NODES%" ( mkdir "%NODES%" >nul 2>nul )
 echo Using custom_nodes: %NODES%
@@ -123,8 +123,8 @@ echo === Verifying install ===
 if errorlevel 1 ( echo WARNING: Trellis2 wheels did not import correctly. ) else (
     echo.
     echo ============================================
-    echo  Trellis2 global install complete!
-    echo  Restart ComfyUI and you are good to go.
+    echo  Trellis2 portable, ROCm 10.0 install complete!
+    echo  Restart ComfyUI - run ComfyUI\run_nvidia_gpu.bat or equivalent - and you are good to go.
     echo ============================================
 )
 

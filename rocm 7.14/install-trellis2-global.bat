@@ -24,7 +24,7 @@ rem ============================================================
 
 cd /d "%~dp0"
 
-set "WT=.\wheels"
+set "WT=.\Trellis 2 Wheels"
 
 rem ---- git availability ----
 where git >nul 2>nul
@@ -44,14 +44,25 @@ echo.
 echo Using python: %PY%
 %PY% --version
 
-rem ---- verify torch is EXACTLY 2.12.0 + ROCm 7.14.0 ----
+rem ---- verify torch is EXACTLY 2.12 + ROCm 7.14, x.y check ----
 echo.
 echo === Verifying torch / ROCm version ===
-"%PY%" -c "import torch,re,sys; v=torch.__version__; m=re.search(r'rocm([0-9]+\.[0-9]+\.[0-9]+)',v); tv=tuple(int(x) for x in v.split('+')[0].split('.')[:2]); rv=tuple(int(x) for x in m.group(1).split('.'))[:2] if m else (0,0); sys.exit(0) if (m and tv==(2,12) and rv==(7,14)) else (print('ERROR: this installer is locked to torch 2.12 + ROCm 7.14 (the build family in this folder).') or print('       found: '+v) or sys.exit(1))"
-if errorlevel 1 (
+set "ROCMCHK=%TEMP%\trellis_rocm_check_%RANDOM%.py"
+echo import torch, re, sys>"%ROCMCHK%"
+echo v = torch.__version__>>"%ROCMCHK%"
+echo m = re.search(r'rocm([0-9]+\.[0-9]+\.[0-9]+)', v)>>"%ROCMCHK%"
+echo ok = (m is not None) and tuple(int(x) for x in v.split('+')[0].split('.')[:2]) == (2, 12) and tuple(int(x) for x in m.group(1).split('.')[:2]) == (7, 14)>>"%ROCMCHK%"
+echo if not ok:>>"%ROCMCHK%"
+echo     print('ERROR: locked to torch 2.12 + ROCm 7.14, found: ' + v)>>"%ROCMCHK%"
+echo     sys.exit(1)>>"%ROCMCHK%"
+echo sys.exit(0)>>"%ROCMCHK%"
+"%PY%" "%ROCMCHK%"
+set "ROCMERR=%errorlevel%"
+if exist "%ROCMCHK%" del /f /q "%ROCMCHK%" >nul 2>nul
+if %ROCMERR% neq 0 (
     echo.
     echo ERROR: torch/ROCm version mismatch. Use the torch 2.12 + ROCm 7.14
-    echo build family (the one paired with this folder). Other versions are refused.
+    echo build family, the one paired with this folder. Other versions are refused.
     pause & exit /b 1
 )
 echo  torch 2.12 + ROCm 7.14 confirmed.
@@ -108,11 +119,11 @@ call :install_wheel uv_raster "%WT%\uv_raster-0.1.0-cp312-cp312-win_amd64.whl"
 
 echo.
 echo === Verifying install ===
-"%PY%" -c "import cumesh, flex_gemm, nvdiffrast, o_voxel; import uv_raster; print('Trellis2 wheels OK')"
+"%PY%" -c "import cumesh, flex_gemm, nvdiffrast, o_voxel, uv_raster"
 if errorlevel 1 ( echo WARNING: Trellis2 wheels did not import correctly. ) else (
     echo.
     echo ============================================
-    echo  Trellis2 (global / ROCm 7.14) install complete!
+    echo  Trellis2 global, ROCm 7.14 install complete!
     echo  Don't forget: copy the aotriton.images folder into
     echo    <python>\Lib\site-packages\torch\lib\
     echo  Restart ComfyUI and you are good to go.
@@ -121,6 +132,7 @@ if errorlevel 1 ( echo WARNING: Trellis2 wheels did not import correctly. ) else
 
 echo.
 pause
+goto :eof
 
 rem ---- helper: always force-reinstall the wheel (no skip) ----
 :install_wheel
