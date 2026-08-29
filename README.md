@@ -1,7 +1,19 @@
 # Trellis2-Rocm-Windows-Installer for https://github.com/visualbruno/ComfyUI-Trellis2
 One-click installers for Microsoft TRELLIS 2 on AMD GPUs under Windows — native ROCm build. Includes a portable ComfyUI installer, a global-python installer, all with auto node-clone, force-reinstall wheel installs, and the uv_raster AMD-native rasterizer patches for render/extract.
 
+# You need to have access to facebook dinov3 models in order to use Trellis.2
+
+https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m
+
+Clone the repository in ComfyUI models folder under "facebook/dinov3-vitl16-pretrain-lvd1689m"
+
+So in ComfyUI/models/facebook/dinov3-vitl16-pretrain-lvd1689m
+
+As of now Pixal3D-T model, it's working natten package still needs porting 
+
 # Tested on RDNA 4. Compiled with RDNA3, RDNA3.5 and RDNA4 for Rocm 7.2.1+Pytorch 2.9.1 and Rocm 7.14+Pytorch 2.12
+
+Backend needs to be change from Flash Attention--->SDPA as per photo to work
 
 ---
 
@@ -27,17 +39,25 @@ ComfyUI_windows_portable\
 
 ```
 
-## install-trellis2-global-new.bat
+## install-trellis2-global.bat
 
 **Place the `.bat` next to a `wheels\` folder** (anywhere, since it uses the global `python` from PATH). The node is cloned into `.\ComfyUI\custom_nodes\ComfyUI-Trellis2` (or `.\custom_nodes\` if that exists) relative to wherever you run the bat — so run it from the ComfyUI install root if you want the node in the right place. `git` must be on PATH, and wheels are always force-reinstalled.
 
 ```
 some-folder\
-├── install-trellis2-global-new.bat   ← here
+├── install-trellis2-global.bat   ← here
 └── wheels\                          ← WT=.\wheels
     ├── cumesh-...whl
     ├── flex_gemm-...whl
     ├── nvdiffrast-...whl
     ├── o_voxel-...whl
     └── uv_raster-...whl
+```
+
+## My startup flags 
+
+```
+set PYTORCH_ALLOC_CONF=expandable_segments:True
+set HIP_VISIBLE_DEVICES=0
+.\python_embeded\python.exe -s ComfyUI\main.py --windows-standalone-build --use-pytorch-cross-attention
 ```
