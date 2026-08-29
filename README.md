@@ -1,10 +1,6 @@
 # Trellis2-Rocm-Windows-Installer for https://github.com/visualbruno/ComfyUI-Trellis2
 One-click installers for Microsoft TRELLIS 2 on AMD GPUs under Windows — native ROCm build. Includes a portable ComfyUI installer, a global-python installer, all with auto node-clone, force-reinstall wheel installs, and the uv_raster AMD-native rasterizer patches for render/extract.
 
-# 3DGenStudio 2.7.1 added SDPA Backend to workflow
-
-
-
 # You need to have access to facebook dinov3 models in order to use Trellis.2
 
 https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m
@@ -13,7 +9,7 @@ Clone the repository in ComfyUI models folder under "facebook/dinov3-vitl16-pret
 
 So in ComfyUI/models/facebook/dinov3-vitl16-pretrain-lvd1689m
 
-As of now Pixal3D-T model, it's working natten package still needs porting 
+As of now Pixal3D-T model, isnt working. Natten package still needs porting.
 
 # Tested on RDNA 4. Compiled with RDNA3, RDNA3.5 and RDNA4 for Rocm 7.2.1+Pytorch 2.9.1 and Rocm 7.14+Pytorch 2.12
 
@@ -22,6 +18,20 @@ Backend needs to be change from Flash Attention--->SDPA as per photo to work
 ---
 
 <img width="1920" height="980" alt="Image" src="https://github.com/user-attachments/assets/82851a70-aae3-4473-a1c4-f06f1735b45e" />
+
+---
+
+# 3DGenStudio 2.7.1 added SDPA Backend to workflow
+
+As of that version you can use 3DGenStudio with this Wheels.
+
+---
+
+<img width="2560" height="1396" alt="Image" src="https://github.com/user-attachments/assets/da1f5e03-85b0-4c81-8aba-986821bebe02" />
+
+<img width="2560" height="1405" alt="Image" src="https://github.com/user-attachments/assets/39bff270-77cc-4752-8928-9911e4177200" />
+
+<img width="2560" height="1398" alt="Image" src="https://github.com/user-attachments/assets/59c4129d-2c9f-4e0c-b475-d9d6186c5bea" />
 
 ---
 
