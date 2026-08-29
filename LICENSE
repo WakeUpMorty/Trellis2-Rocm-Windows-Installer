@@ -1,45 +1,21 @@
-3D Gen Studio Community License
+    MIT License
 
-1. License Grant
-Subject to these terms, the Author grants you a non-exclusive, royalty-free, worldwide license to use, copy, and modify this Software for personal, educational, internal research, and commercial purposes (with restrictions noted in Section 2).
+    Copyright (c) Microsoft Corporation.
 
-2. Restrictions on the Software Itself
-You are strictly prohibited from the following without prior written consent from the Author:
-- Selling the Software: You may not sell, rent, or lease the unmodified Software or any derivative versions of it.
-- Commercial Hosting/SaaS: You may not host this Software as a public or private paid service, or include it as part of a paid subscription model, without explicit permission.
-- Paid Commercial Bundles: You may not resell this Software as part of a commercial package or bundle.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-3. YOU CAN: Use Outputs Commercially ✓
-The restrictions in Section 2 apply ONLY to the Software code and interface itself.
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
 
-You Own the Output: You own all 3D meshes, textures, and assets generated using this Software ("Output").
-Commercial Monetization: You are free to use, sell, license, or profit from the Output for any commercial purpose without restrictions, including:
-- Selling models on marketplaces (Sketchfab, Turbosquid, etc.)
-- Using generated assets in commercial games, films, or projects
-- Offering freelance services using generated outputs
-- Licensing or sublicensing generated content
-- No royalties or obligations to the Author
-
-4. External Services & API Keys
-This Software acts as a client for external services (ComfyUI and third-party APIs).
-
-You are responsible for complying with the Terms of Service of any external API providers you use.
-You are responsible for any costs incurred through your use of external API keys or services.
-The Author is not liable for external service fees, outages, or policy changes.
-
-5. Limitation of Liability
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-6. Summary: What You CAN and CANNOT Do
-❌ You CANNOT:
-- Sell, redistribute, or rent the Software itself
-- Offer the Software as a paid SaaS/hosted service
-- Include the unmodified or modified Software in paid products
-
-✅ You CAN:
-- Use the Software to generate 3D assets for any purpose
-- Sell, license, and profit from generated outputs
-- Modify the Software for personal/internal use
-- Use generated content in commercial projects
-- Offer freelance or consulting services using the outputs
-- Run it on your own infrastructure for any use case
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE
