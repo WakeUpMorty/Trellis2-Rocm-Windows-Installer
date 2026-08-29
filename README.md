@@ -37,7 +37,7 @@ As of that version you can use 3DGenStudio with this Wheels.
 
 ## install-trellis2-portable.bat
 
-**Place the `.bat` and the `wheels\` folder in the ComfyUI_windows_portable ROOT** — the folder containing `python_embeded\python.exe` and `ComfyUI\custom_nodes\`. The `wheels\` folder must be next to the `.bat` (same root), and `python_embeded\python.exe` is detected automatically because the bat checks for it first. If absent, the `ComfyUI-Trellis2` node is auto-cloned into `ComfyUI\custom_nodes\` and its `requirements.txt` is installed. `git` must be on PATH, and wheels are always force-reinstalled, so re-running applies the bundled build cleanly.
+**Place the `.bat` and the `Trellis 2 Wheels\` folder in the ComfyUI_windows_portable ROOT** — the folder containing `python_embeded\python.exe` and `ComfyUI\custom_nodes\`. The `wheels\` folder must be next to the `.bat` (same root), and `python_embeded\python.exe` is detected automatically because the bat checks for it first. If absent, the `ComfyUI-Trellis2` node is auto-cloned into `ComfyUI\custom_nodes\` and its `requirements.txt` is installed. `git` must be on PATH, and wheels are always force-reinstalled, so re-running applies the bundled build cleanly.
 
 ```
 ComfyUI_windows_portable\
@@ -55,7 +55,7 @@ ComfyUI_windows_portable\
 
 ## install-trellis2-global.bat
 
-**Place the `.bat` next to a `wheels\` folder** (anywhere, since it uses the global `python` from PATH). The node is cloned into `.\ComfyUI\custom_nodes\ComfyUI-Trellis2` (or `.\custom_nodes\` if that exists) relative to wherever you run the bat — so run it from the ComfyUI install root if you want the node in the right place. `git` must be on PATH, and wheels are always force-reinstalled.
+**Place the `.bat` next to a `Trellis 2 Wheels\` folder** (anywhere, since it uses the global `python` from PATH). The node is cloned into `.\ComfyUI\custom_nodes\ComfyUI-Trellis2` (or `.\custom_nodes\` if that exists) relative to wherever you run the bat — so run it from the ComfyUI install root if you want the node in the right place. `git` must be on PATH, and wheels are always force-reinstalled.
 
 ```
 some-folder\
