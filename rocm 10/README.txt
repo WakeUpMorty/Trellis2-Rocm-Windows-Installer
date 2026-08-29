@@ -2,7 +2,7 @@
 
 This folder contains everything to install Microsoft **Trellis 2** on a
 native-ROCm **ComfyUI_windows_portable** (or a global Python 3.12) running the
-**torch 2.13.0 + ROCm 10.0.0** stack (TheRock-based build).
+**torch 2.13.0 + ROCm 10.0.0** stack.
 
 ================================================================================
 0. VERSION REQUIREMENT (IMPORTANT)
@@ -59,33 +59,9 @@ Both .bat files perform the same automated sequence:
                                  run it from there; it uses whatever "python" is
                                  on your PATH (must be the ROCm 10 build).
 
-After either script finishes, do step 3 (aotriton.images) if your stack needs
-it, then restart ComfyUI.
 
 ================================================================================
-3. aotriton.images (ONLY IF YOUR STACK NEEDS IT)
-================================================================================
-The ROCm 10.0 stack uses AOTriton runtime compile (TheRock wheels), so it
-usually does NOT need separate kernel images. If required, copy the
-aotriton.images folder (the one containing amd-gfx11xx\ and amd-gfx120x\) so
-the result looks like:
-
-  PORTABLE (install-trellis2-portable.bat):
-    ComfyUI_windows_portable\python_embeded\Lib\site-packages\torch\lib\aotriton.images\
-        amd-gfx11xx\
-        amd-gfx120x\
-
-  GLOBAL (install-trellis2-global.bat):
-    <your python 3.12>\Lib\site-packages\torch\lib\aotriton.images\
-        amd-gfx11xx\
-        amd-gfx120x\
-
-NOTE: this folder does NOT bundle aotriton.images. If your torch 2.13+/ROCm 10.0
-stack already ships them (common with the AMD nightly wheels), skip this step.
-If torch fails to find AOTriton proven kernels at runtime, add them here.
-
-================================================================================
-4. MANUAL INSTALL (alternative to the .bat files)
+3. MANUAL INSTALL (alternative to the .bat files)
 ================================================================================
 From the ComfyUI_windows_portable root, with python_embeded\python.exe:
 
@@ -102,10 +78,8 @@ From the ComfyUI_windows_portable root, with python_embeded\python.exe:
     flex_gemm-1.0.0-cp312-cp312-win_amd64.whl nvdiffrast-0.4.0-cp312-cp312-win_amd64.whl ^
     o_voxel-0.0.1-cp312-cp312-win_amd64.whl uv_raster-0.1.0-cp312-cp312-win_amd64.whl
 
-  :: d) Copy aotriton.images if needed (step 3), then restart ComfyUI.
-
 ================================================================================
-5. EXAMPLE INSTALLED PACKAGE VERSIONS (ROCm 10.0 stack)
+4. EXAMPLE INSTALLED PACKAGE VERSIONS (ROCm 10.0 stack)
 ================================================================================
   torch                      2.13.0+rocm10.0.0   (any 2.13.x/10.0.x accepted)
   torchvision                0.28.0+rocm10.0.0
@@ -120,11 +94,10 @@ From the ComfyUI_windows_portable root, with python_embeded\python.exe:
   cumesh 1.0 | flex_gemm 1.0.0 | nvdiffrast 0.4.0 | o_voxel 0.0.1 | uv_raster 0.1.0
 
 ================================================================================
-6. TROUBLESHOOTING
+5. TROUBLESHOOTING
 ================================================================================
   - "torch/ROCm version mismatch": your torch is not in the 2.13 + 10.0
-    family. Install that build family first (step 5 versions above).
+    family. Install that build family first (step 4 versions above).
   - GLB / texture baking crashes on AMD: ensure uv_raster is installed
     (it auto-patches the ComfyUI-Trellis2 node's rasterization to use the
     native-HIP backend). The o_voxel wheel is used by the standalone app only.
-  - Missing AOTriton kernels at runtime: copy aotriton.images as in step 3.
