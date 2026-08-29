@@ -1,6 +1,10 @@
 # Trellis2-Rocm-Windows-Installer for https://github.com/visualbruno/ComfyUI-Trellis2
 One-click installers for Microsoft TRELLIS 2 on AMD GPUs under Windows — native ROCm build. Includes a portable ComfyUI installer, a global-python installer, all with auto node-clone, force-reinstall wheel installs, and the uv_raster AMD-native rasterizer patches for render/extract.
 
+# 3DGenStudio 2.7.1 added SDPA Backend to workflow
+
+
+
 # You need to have access to facebook dinov3 models in order to use Trellis.2
 
 https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m
@@ -28,7 +32,7 @@ Backend needs to be change from Flash Attention--->SDPA as per photo to work
 ```
 ComfyUI_windows_portable\
 ├── install-trellis2-portable.bat   ← here
-├── wheels\                        ← WT=.\wheels  (next to the .bat)
+├── Trellis 2 Wheels\                        ← WT=.\Trellis 2 Wheels  (next to the .bat)
 │   ├── cumesh-1.0-cp312-cp312-win_amd64.whl
 │   ├── flex_gemm-1.0.0-cp312-cp312-win_amd64.whl
 │   ├── nvdiffrast-0.4.0-cp312-cp312-win_amd64.whl
@@ -46,7 +50,7 @@ ComfyUI_windows_portable\
 ```
 some-folder\
 ├── install-trellis2-global.bat   ← here
-└── wheels\                          ← WT=.\wheels
+└── Trellis 2 Wheels\                          ← WT=.\Trellis 2 Wheels
     ├── cumesh-...whl
     ├── flex_gemm-...whl
     ├── nvdiffrast-...whl
